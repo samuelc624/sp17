@@ -6,16 +6,35 @@
  ;            print the character to the monitor
 
  .ORIG x3000
+		
+		AND R3, #0
+		ADD R3, xBRUH
+		STI R3, VALUE
+		ADD R0, #4
+MEME	ADD R1, #4
+		AND R4, #0
 
-	ADD R0 #4
-	BRzn .END
-	ADD R1 #4
-	AND R4 #0	
+		
+		ADD R5, R5, R3
+		AND R5 X8000
+		BRn ECE
+		
+SHIFT						; take digits from left side (R3) and load from right side into R4
+		
+		ADD R3, R3, R3
+		ADD R1, #-1
+		BRp SHIFT
+ECE								; if MSB is 0
 
+		ADD R5, R5, R4
+PRINT	ADD R5, #-9
+		BRzp POOP
+		ADD R4, #65
+POOP	OUT
+		AND R4, #0
+		ADD R0, #-1
+		BRp MEME
 
-
-
-	
 
 
  ; stop the computer
@@ -23,6 +42,7 @@
 
  ; program data section starts here
 
+VALUE	.FILL	X4000
 
  .END
 
