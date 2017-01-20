@@ -7,6 +7,15 @@
 
  .ORIG x3000
 
+	ADD R0 #4
+	BRzn .END
+	ADD R1 #4
+	AND R4 #0	
+
+
+
+
+	
 
 
  ; stop the computer
