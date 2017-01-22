@@ -1,0 +1,10 @@
+// Symbol table
+// Scope level 0:
+//	Symbol Name       Page Address
+//	----------------  ------------
+//	MEME              3003
+//	SHIFT             3007
+//	ECE               300C
+//	PRINT             300E
+//	POOP              3012
+
