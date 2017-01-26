@@ -95,28 +95,127 @@ GET_NEXT
 	BRnzp COUNTLOOP		; go to start of counting loop
 
 
+;NEW REGISTER TABLE
+;;R0 = OUT
+;;R1 = DIGIT
+;;R2 = BIT
+;;R3 = EXTRACTION
+;;R4 = VALUE
+;;R5 = HISTOGRAM COUNTER
+;;R6 = ADDRESS
+;;R7 = NOT USED
+
+
+
+
+
+
+
+
 
 PRINT_HIST
 
 ; you will need to insert your code to print the histogram here
 
+;INITIALISATION
+AND R1,R1,#0
+AND R2,R2,#0
+AND R3,R3,#0
+AND R4,R4,#0
+AND R5,R5,#0
+AND R6,R6,#0
+
+	LD R6,HIST_ADDR	;Histogram Address
+	LD R5, NUM_BINS
+	
+HISTO	LD R0, AT	;PRINT AT BEGINNING OF LINE TO REPRESENT CHAR
+	OUT
+	LD R0, SPACE	; PRINT SPACE
+	OUT
+	LD R0, AT
+	ADD R0,R0,#1	;INCREMENT CHAR FOR NEXT LINE
+	ST R0, AT	;STORE BACK INTO MEMORY
+	AND R0,R0,#0
+
+	LDR R4,R6,#0	;let value be stored in R4
+	ADD R1,R1,#4	;digit counter
+
+DIGIT	BRz NEXT	;checks if digit counter is 0
+	AND R0,R0,#0	;resets used registers for next digit
+	AND R3,R3,#0
+
+	AND R2,R2,#0
+	ADD R2,R2,#4	;bit counter
+
+BIT	BRz PRINT	
+	ADD R3,R3,R3	;shift digit left
+	ADD R4,R4,#0	;set nzp
+	BRn ONEBIT	;check most significant bit
+	BRzp ZEROBIT
+
+ONEBIT	ADD R3,R3,#1	;if negative, add 1
+	BRnzp NXTDGT
+
+ZEROBIT	ADD R3,R3,#0	;if positive, add 0
+	BRnzp NXTDGT
+
+NXTDGT	ADD R4,R4,R4	;shift R4 left
+	ADD R2,R2,#-1	;decrement bit counter
+	BRp BIT	;less than 4 digits from R4
+	BRnz PRINT	;if 4 bits taken, go to output
+	
+PRINT	ADD R3,R3,#-10	;calculate offset by subtracting -10 or xA
+	BRn NMBR	;if negative, its a number
+	BRzp ALPH	;if zero or positive, then letter
+	
+NMBR	ADD R3,R3,#10	;get number offset
+	LD R0,NUM	;load ASCII 0
+	ADD R0,R0,R3	;add offset
+	OUT		;display
+	ADD R1,R1,#-1	;decrement digit counter
+	BRnzp DIGIT	;loop
+	
+ALPH 	LD R0,LETTER	;load ASCII A 
+	ADD R0,R0,R3	;add offset
+	OUT		;display
+	ADD R1,R1,#-1	;decrement digit counter
+	BRnzp DIGIT	;loop
+	
+NEXT	LD R0,NEW_LN
+	OUT
+	AND R0,R0,#0
+	ADD R6,R6,#1	;increasing histogram address
+	
+	ADD R5,R5,#-1	;decreasing histogram counter
+	BRnz DONE
+	BRp HISTO
 
 
 DONE	HALT			; done
 
 
 ; the data needed by the program
+
+NUM 	.FILL x30	;ASCII 0
+LETTER 	.FILL x41	;ASCII A
+
+NEW_LN	.FILL xA	;ASCII New Line
+SPACE	.FILL x20	;ASCII Space
+AT	.FILL x40	;ASCII LETTERS
+
 NUM_BINS	.FILL #27	; 27 loop iterations
 NEG_AT		.FILL xFFC0	; the additive inverse of ASCII '@'
 AT_MIN_Z	.FILL xFFE6	; the difference between ASCII '@' and 'Z'
 AT_MIN_BQ	.FILL xFFE0	; the difference between ASCII '@' and '`'
-HIST_ADDR	.FILL x3F00     ; histogram starting address
+HIST_ADDR	.FILL x3F00     ; histogram starting address WHERE HIST STARTS
 STR_START	.FILL x4000	; string starting address
+
+
 
 ; for testing, you can use the lines below to include the string in this
 ; program...
-; STR_START	.FILL STRING	; string starting address
-; STRING		.STRINGZ "This is a test of the counting frequency code.  AbCd...WxYz."
+;; STR_START	.FILL STRING	; string starting address
+;; STRING		.STRINGZ "This is a test of the counting frequency code.  AbCd...WxYz."
 
 
 
