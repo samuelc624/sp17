@@ -24,7 +24,7 @@ Have fun.
 --- halting the LC-3 ---
 
 PC=x0494 IR=xB1AE PSR=x0400 (ZERO)
-R0=x0000 R1=x7FFF R2=x0000 R3=x0000 R4=x0000 R5=x0000 R6=x0000 R7=x0490 
+R0=x0000 R1=x7FFF R2=x0000 R3=x0000 R4=x0000 R5=x0000 R6=x0000 R7=x0490
                    x0494 x0FF9 BRNZP TRAP_HALT
 Loaded "test1.obj" and set PC to x4000
 Loaded "prog1.obj" and set PC to x3000
@@ -60,7 +60,7 @@ Z 0001
 --- halting the LC-3 ---
 
 PC=x0494 IR=xB1AE PSR=x0400 (ZERO)
-R0=x0000 R1=x7FFF R2=x0000 R3=x0001 R4=x0000 R5=x0000 R6=x3F1B R7=x0490 
+R0=x0000 R1=x7FFF R2=x0000 R3=x0001 R4=x0000 R5=x0000 R6=x3F1B R7=x0490
                    x0494 x0FF9 BRNZP TRAP_HALT
 
 
@@ -82,7 +82,7 @@ Have fun.
 --- halting the LC-3 ---
 
 PC=x0494 IR=xB1AE PSR=x0400 (ZERO)
-R0=x0000 R1=x7FFF R2=x0000 R3=x0000 R4=x0000 R5=x0000 R6=x0000 R7=x0490 
+R0=x0000 R1=x7FFF R2=x0000 R3=x0000 R4=x0000 R5=x0000 R6=x0000 R7=x0490
                    x0494 x0FF9 BRNZP TRAP_HALT
 Loaded "test2.obj" and set PC to x4000
 Loaded "prog1.obj" and set PC to x3000
@@ -118,7 +118,7 @@ Z 0000
 --- halting the LC-3 ---
 
 PC=x0494 IR=xB1AE PSR=x0400 (ZERO)
-R0=x0000 R1=x7FFF R2=x0000 R3=x0000 R4=x0000 R5=x0000 R6=x3F1B R7=x0490 
+R0=x0000 R1=x7FFF R2=x0000 R3=x0000 R4=x0000 R5=x0000 R6=x3F1B R7=x0490
                    x0494 x0FF9 BRNZP TRAP_HALT
 
 
@@ -140,7 +140,7 @@ Have fun.
 --- halting the LC-3 ---
 
 PC=x0494 IR=xB1AE PSR=x0400 (ZERO)
-R0=x0000 R1=x7FFF R2=x0000 R3=x0000 R4=x0000 R5=x0000 R6=x0000 R7=x0490 
+R0=x0000 R1=x7FFF R2=x0000 R3=x0000 R4=x0000 R5=x0000 R6=x0000 R7=x0490
                    x0494 x0FF9 BRNZP TRAP_HALT
 Loaded "test3.obj" and set PC to x4000
 Loaded "prog1.obj" and set PC to x3000
@@ -176,12 +176,13 @@ Z 0000
 --- halting the LC-3 ---
 
 PC=x0494 IR=xB1AE PSR=x0400 (ZERO)
-R0=x0000 R1=x7FFF R2=x0000 R3=x0000 R4=x0000 R5=x0000 R6=x3F1B R7=x0490 
+R0=x0000 R1=x7FFF R2=x0000 R3=x0000 R4=x0000 R5=x0000 R6=x3F1B R7=x0490
                    x0494 x0FF9 BRNZP TRAP_HALT
 
 Grade:
 ******
 Late submission: 0
 Functionality: 90
-Comments and Style: Not Yet Graded
-Intro paragraph: Not Yet Graded
+Comments and Style: 5
+Intro paragraph: 0
+Total: 95
