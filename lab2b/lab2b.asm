@@ -4,21 +4,52 @@
 
 
 
+LD R3, TEST
+AND R4, R4, #0
+ADD R4, R4, #10
+LOOP                                                                                                                                                                                                                                                                   	JSR DIV
+AND R3, R3, #0
+ADD R3, R3, R0
+AND R0, R0, #0
+ADD R0, R0, R1
+JSR PUSH
+ADD R3, R3, #0
+BRp LOOP
+
+PRINT	JSR POP
+ADD R5, R5, #-1
+BRz	DONE
+ADD R0, R0, #0
+OUT 
+AND R5, R5, #0
+BRnzp	PRINT
+
+
+DONE	HALT
 
 
 
 
-
-
-
-
+TEST .FILL x001F
 
 
 ASCII_0 .FILL x30
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;input R3, R4
 ;out R0-quotient, R1-remainder
-DIV	
+DIV
+AND R0, R0, #0
+AND R1, R1, #0
+ADD R1, R3, R1
+ZERO	ADD R0, R0, #1
+NOT R4, R4
+ADD R4, R4, #1
+ADD R1, R1, R4
+BRzp	ZERO
+ADD R0, R0, #-1
+NOT R4, R4
+ADD R4, R4, #1
+ADD R1, R1, R4
 	RET
 
 

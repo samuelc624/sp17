@@ -2,7 +2,32 @@
 ; Write code to read in characters and echo them
 ; till a newline character is entered.
 
- 
+
+
+GETCHAR	GETC
+OUT
+LD R1, SPACE
+NOT R1, R1
+ADD R1, R1, #1
+ADD R1, R0, R1
+BRz GETCHAR
+LD R1, NEW_LINE
+NOT R1, R1
+ADD R1, R1, #1
+ADD R1, R0, R1
+BRz DONE
+LD R1, CHAR_RETURN
+NOT R1, R1
+ADD R1, R1, #1
+ADD R1, R0, R1
+BRz DONE
+
+JSR IS_BALANCE
+
+DONE	HALT
+
+
+
 SPACE   .FILL x0020
 NEW_LINE        .FILL x000A
 CHAR_RETURN     .FILL x000D
