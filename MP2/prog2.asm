@@ -1,96 +1,116 @@
-;ADD R5, R5, #0						USE THIS AFTER EVERY SUBROUTINE
-;BRp	FAIL
-;
-;
+;Intro paragraph
+;First, we began the program by getting input from the user through a string or numbers and operations. We checked for spaces and if the
+;next character was valid, we continue by checking for the semicolon to end the program. If there was no semicolon, we would push the  
+;number onto the stack, go to the +,-,/,* subroutine, or go to ^ subroutine. After each operation subroutine, we would push the result onto
+;the stack and return to the main code. After a ; input, the program would store the final answer into R0 to pop and load R4 with
+;the answer.Execute PRINT_HEX subroutine and print to console and store the answer into R5 as well.
+
+
+
 .ORIG x3000
 	
 ;your code goes here
+ENTRY	AND R0, R0, #0		;INITIALIZATION
+	AND R1, R1, #0	
+	GETC			;INPUT CHARACTER
+	OUT			;ECHO CHARACTER TO CONSOLE
+	LD R1, ASCII_SPACE	;LOAD R1 WITH ASCII SPACE
+	NOT R1, R1
+	ADD R1, R1, #1		;NEGATE R1
+	ADD R1, R1, R0		;ADD ASCII SPACE OFFSET TO CHARACTER
+	BRz SPACES		;CHECK FOR SPACE IN INPUT STRING
+	LD R1, SEMI		;LOAD R1 WITH ASCII ";"
+	NOT R1, R1
+	ADD R1, R1, #1
+	ADD R1, R1, R0		;ADD ASCII OFFSET TO R0
+	BRz PRINT		;CHECK FOR ";" IN INPUT STRING
+	AND R1, R1, #0		;CLEAR R1
+	JSR EVALUATE		;EVALUATE SUBROUTINE
+	ADD R5, R5, #0		;CHECK FOR UNDERFLOW
+	BRp FAIL		;IF 1, PRINT OUT "INVALID EXPRESSION"
+	BRnzp ENTRY		;RESTART LOOP
 	
+SPACES	BRnzp ENTRY		;RESTART LOOP
+	 	
+FAIL	LEA R0, STRING		;LOAD R0 WITH STRING
+	PUTS			;PRINT STRING
+	BRnzp ENDPROGRAM	;HALT PROGRAM
+PRINT	JSR POP			;POP VALUE FROM STACK
+	ADD R5, R5, #0		;CHECK FOR UNDERFLOW
+	BRp FAIL		;PRINT OUT "INVALID EXPRESSION"
+	ST R0, FINAL_ANSWER	;STORE ANSWER INTO R0
+	JSR POP			;POP VALUE FROM STACK
+	ADD R5, R5, #0		;CHECK FOR UNDERFLOW
+	BRnz FAIL		;PRINT OUT "INVALID EXPRESSION"
+	LD R4, FINAL_ANSWER	;LOAD ANSWER INTO R4
+	JSR PRINT_HEX		;PRINT OUT ANSWER TO CONSOLE
+	LD R5, FINAL_ANSWER	;STORE ANSWER INTO R5
+ENDPROGRAM	HALT
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-BRnzp	DONE
-
-FAIL	LEA R0, STRING
-	PUTS
-DONE	HALT
-
-
-
-
+ASCII_SPACE	.FILL x20
+SEMI	.FILL x3B	;	ASCII (;)
+FINAL_ANSWER	.BLKW #1
 STRING	.STRINGZ "Invalid Expression."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;R3- value to print in hexadecimal
 PRINT_HEX
+	ST R7, SAVE_R7_PRINT_HEX
+;INITIALISATION
+AND R1,R1,#0
+AND R5,R5,#0
 
-	
-	LDR R3,R6,#0	;let value be stored in R4
-	ADD R1,R1,#4	;digit counter
+ADD R1,R1,#4	;digit counter
 
-DIGIT	BRz NEXT	;checks if digit counter is 0
+;let value be stored in R4
+BIG 	BRz RETURNSAM	;checks if digit counter is 0
 	AND R0,R0,#0	;resets used registers for next digit
-	AND R4,R4,#0
-
+	AND R3,R3,#0
+	AND R5,R5,#0
 	AND R2,R2,#0
 	ADD R2,R2,#4	;bit counter
 
-BIT	BRz PRINT	
-	ADD R4,R4,R4	;shift digit left
-	ADD R3,R3,#0	;set nzp
+SMALL	BRz PRINTZ	
+	ADD R3,R3,R3	;shift digit left
+	ADD R4,R4,#0	;set nzp
 	BRn ONEBIT	;check most significant bit
 	BRzp ZEROBIT
 
-ONEBIT	ADD R4,R4,#1	;if negative, add 1
-	BRnzp NXTDGT
+ONEBIT	ADD R3,R3,#1	;if negative, add 1
+	BRnzp NEXT
 
-ZEROBIT	ADD R4,R4,#0	;if positive, add 0
-	BRnzp NXTDGT
+ZEROBIT	ADD R3,R3,#0	;if positive, add 0
+	BRnzp NEXT
 
-NXTDGT	ADD R3,R3,R3	;shift R4 left
+NEXT	ADD R4,R4,R4	;shift R4 left
 	ADD R2,R2,#-1	;decrement bit counter
-	BRp BIT	;less than 4 digits from R4
-	BRnz PRINT	;if 4 bits taken, go to output
+	BRp SMALL	;less than 4 digits from R4
+	BRnz PRINTZ	;if 4 bits taken, go to output
 	
-PRINT	ADD R4,R4,#-10	;calculate offset by subtracting -10 or xA
+PRINTZ	ADD R5,R3,#-10	;calculate offset by subtracting -10 or xA
 	BRn NMBR	;if negative, its a number
-	BRzp ALPH	;if zero or positive, then letter
+	BRzp ALPHA	;if zero or positive, then letter
 	
-NMBR	ADD R4,R4,#10	;get number offset
-	LD R0,NUM	;load ASCII 0
-	ADD R0,R0,R4	;add offset
+NMBR	LD R0,NUM	;load ASCII 0
+	ADD R0,R0,R3	;add offset
 	OUT		;display
 	ADD R1,R1,#-1	;decrement digit counter
-	BRnzp DIGIT	;loop
+	BRnzp BIG	;loop
 	
-ALPH 	LD R0,LETTER	;load ASCII A 
-	ADD R0,R0,R4	;add offset
+ALPHA 	LD R0,LETTER	;load ASCII A 
+	ADD R0,R0,R5	;add offset
 	OUT		;display
 	ADD R1,R1,#-1	;decrement digit counter
-	BRnzp DIGIT	;loop
+	BRnzp BIG	;loop
 
+RETURNSAM	
+		LD R7, SAVE_R7_PRINT_HEX
+		RET
 
-
-
-
-
+SAVE_R7_PRINT_HEX	.BLKW #1
+NUM 	.FILL x30	;ASCII 0
+LETTER 	.FILL x41	;ASCII A
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;R0 - character input from keyboard
 ;R6 - current numerical output
@@ -99,176 +119,215 @@ ALPH 	LD R0,LETTER	;load ASCII A
 EVALUATE
 
 ;your code goes here
+	
+	ST R7, SAVE_R7_EVALUATE	;SAVE R7
+	LD R1, ASCII_ZERO	;LOAD R1 WITH ASCII 0
+	NOT R1, R1
+	ADD R1, R1, #1		;NEGATE R1
+	ADD R1, R1, R0		;ADD OFFSET TO R0
+	BRn CASES		;IF NEGATIVE, OPERATION CHARACTER AND GO TO CASES
+	LD R1, ASCII_NINE	;LOAD R1 WITH ASCII "9"
+	NOT R1, R1
+	ADD R1, R1, #1		;NEGATE R1
+	ADD R1, R1, R0		;ADD OFFSET TO R0
+	BRnz NUM_PUSH		;IF NEGATIVE OR 0, PUSH NUMBER ONTO STACK
+	LD R1, EXPONENT		;LOAD R1 WITH ASCII "^"
+	NOT R1, R1
+	ADD R1, R1, #1		;NEGATE R1
+	ADD R1, R1, R0		;ADD OFFSET TO R0
+	BRz CASE_EXP		;IF 0, EXPONENT CHARACTER AND GO TO CASE_EXP
+	BRnzp RETURNZ		
 
+NUM_PUSH	
+	LD R1, ASCII_ZERO
+	NOT R1, R1
+	ADD R1, R1, #1
+	ADD R0, R1, R0		;RESTORE OFFSET TO R1 AND ADD TO R0
+	JSR PUSH		;PUSH ONTO STACK
+	BRnzp RETURNZ
 
+CASES	LD R1, ADDITION		
+	NOT R1, R1
+	ADD R1, R1, #1
+	ADD R1, R1, R0		;RESTORE OFFSET TO R1 AND ADD TO R0
+	BRz CASE_PLUS
+	LD R1, MINUS
+	NOT R1, R1
+	ADD R1, R1, #1
+	ADD R1, R1, R0		;RESTORE OFFSET TO R1 AND ADD TO R0
+	BRz CASE_MIN
+	LD R1, MULTIPLY
+	NOT R1, R1
+	ADD R1, R1, #1
+	ADD R1, R1, R0		;RESTORE OFFSET TO R1 AND ADD TO R0
+	BRz CASE_MUL
+	LD R1, DIVIDE
+	NOT R1, R1
+	ADD R1, R1, #1
+	ADD R1, R1, R0		;RESTORE OFFSET TO R1 AND ADD TO R0
+	BRz CASE_DIV
 
+CASE_PLUS	JSR PLUS	;EXECUTE PLUS SUBROUTINE
+		BRnzp RETURNZ	
+CASE_MIN	JSR MIN		;EXECUTE MIN SUBROUTINE
+		BRnzp RETURNZ
+CASE_MUL	JSR MUL		;EXECUTE MUL SUBROUTINE
+		BRnzp RETURNZ
+CASE_DIV	JSR DIV		;EXECUTE DIV SUBROUTINE
+		BRnzp RETURNZ
+CASE_EXP	JSR EXP		;EXECUTE EXP SUBROUTINE
+		BRnzp RETURNZ
+		
+RETURNZ		LD R7, SAVE_R7_EVALUATE	;RESTORE R7
+		RET		;RETURN TO MAIN CODE
 
+SAVE_R7_EVALUATE	.BLKW #1
 
+ASCII_ZERO	.FILL x30	;ASCII OFFSETS
+ASCII_NINE	.FILL x39
 
+ADDITION	.FILL x2B
+MINUS		.FILL x2D
+MULTIPLY	.FILL x2A
+DIVIDE		.FILL x2F
+EXPONENT	.FILL x5E
 
-
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;input R3, R4
 ;out R0
 PLUS	
 ;your code goes here
-
-
-
-JSR POP
-ADD R5, R5, #0
-BRp	RETURN
-ADD R4, R0, #0
-JSR POP
-ADD R5, R5, #0
-BRp	RETURN
-ADD R3, R0, #0
-AND R0, R0, #0
-ADD R0, R3, R4
-RETURN	RET
-	
+	ST R7, SAVE_R7_PLUS	;SAVE R7
+	JSR POP			;POP VALUE FROM STACK
+	ADD R5, R5, #0		
+	BRp RETURNA		;CHECK FOR UNDERFLOW
+	ADD R4, R0, #0		;STORE VALUE INTO R4
+	JSR POP			;POP VALUE FROM STACK
+	ADD R5, R5, #0			
+	BRp RETURNA		;CHECK FOR UNDERFLOW
+	ADD R3, R0, #0		;STORE VALUE INTO R3
+	ADD R0, R3, R4		;ADD R3 AND R4 STORE INTO R0
+	JSR PUSH		;PUSH VALUE ONTO STACK
+RETURNA	LD R7, SAVE_R7_PLUS	;RESTORE R7
+	RET			;RETURN
+SAVE_R7_PLUS	.BLKW #1
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;input R3, R4
 ;out R0
 MIN	
 ;your code goes here
-
-JSR POP
-ADD R5, R5, #0
-BRp	RETURN	
-ADD R4, R0, #0
-JSR POP
-ADD R5, R5, #0
-BRp	RETURN
-ADD R3, R0, #0
-NOT R4, R4
-ADD R4, R4, #1
-ADD R0, R3, R4
-JSR PUSH
-RETURN	RET
-
-
-
-
-	
+	ST R7, SAVE_R7_MIN	;SAVE R7
+	JSR POP			;POP VALUE FROM STACK
+	ADD R5, R5, #0
+	BRp RETURNB		;UNDERFLOW
+	ADD R4, R0, #0		;STORE R0 INTO R4
+	JSR POP			;POP	
+	ADD R5, R5, #0		
+	BRp RETURNB		;UNDERFLOW
+	ADD R3, R0, #0		;STORE R0 INTO R3
+	NOT R4, R4		
+	ADD R4, R4, #1		;NEGATE R4
+	ADD R0, R3, R4		;SUBTRACT R4 FROM R3 AND STORE INTO R0
+	JSR PUSH		;PUSH INTO STACK
+RETURNB	LD R7, SAVE_R7_MIN	;RESTORE R7
+	RET			;RETURN
+SAVE_R7_MIN	.BLKW #1	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;input R3, R4
 ;out R0
 MUL	
 ;your code goes here
-
-	JSR POP
+	ST R7, SAVE_R7_MUL	;SAVE R7
+	JSR POP			;POP VALUE
+	ADD R5, R5, #0		
+	BRp RETURNC		;UNDERFLOW
+	ADD R4, R0, #0		;STORE R0 INTO R4
+	JSR POP			;POP
 	ADD R5, R5, #0
-	BRp	RETURN
-	ADD R4, R0, #0
-	JSR POP
-	ADD	R5, R5, #0
-	BRp	RETURN
-	AND R3, R4, #O
-LOOP_M	ADD R4, R4, R0
-	ADD R3, R3, #-1
-	BRp LOOP_M
-	ADD R0, R4, #0
-	JSR PUSH
-RETURN	RET
-
-
-	
+	BRp RETURNC		;UNDERFLOW
+	AND R3, R3, #0		;CLEAR R3
+LOOP_M	ADD R3, R3, R0		;ADD R3 INTO R0
+	ADD R4, R4, #-1		;DECREMENT COUNTER
+	BRp LOOP_M		;LOOP
+	ADD R0, R3, #0		;STORE RESULT FROM R3 INTO R0
+	JSR PUSH		;PUSH VALUE ONTO STACK
+RETURNC	LD R7, SAVE_R7_MUL	;RESTORE R7
+	RET			;RETURN
+SAVE_R7_MUL	.BLKW #1	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;input R3, R4
-;out R0
+;out R0 R1-REMAINDER
 DIV	
 ;your code goes here
+	ST R7, SAVE_R7_DIV	;SAVE R7
+	JSR POP			;POP FROM STACK
+	ADD R5, R5, #0		
+	BRp RETURND		;CHECK FOR UNDERFLOW
+	ADD R4, R0, #0		;STORE INTO R4
+	JSR POP			;POP FROM STACK
+	ADD R5, R5, #0
+	BRp RETURND		;UNDERFLOW
+	ADD R3, R0, #0		;STORE INTO R3
+	AND R0, R0, #0		;CLEAR R0
+	AND R1, R1, #0		;CLEAR R1
+	ADD R1, R3, R1		;ADD VALUE TO REMAINDER R1
+	NOT R4, R4
+	ADD R4, R4, #1		;NEGATE R4
+ZERO	ADD R0, R0, #1		;INCREASE QUOTIENT
+	ADD R1, R1, R4		;DECREASE REMAINDER BY FACTOR
+	BRzp ZERO		;LOOP UNTIL REMAINDER IS NEGATIVE
+	ADD R0, R0, #-1		;SUBTRACT ONE FROM QUOTIENT
+	JSR PUSH		;PUSH ANSWER TO STACK
+	NOT R4, R4
+	ADD R4, R4, #1
+	ADD R1, R1, R4		;ADD R4 BACK INTO R1
 
-
-
-JSR POP
-ADD R5, R5, #0
-BRp	RET
-ADD R4, R0, #0
-JSR POP
-ADD R5, R5, #0
-BRp	RET
-ADD R3, R0, #0
-AND R0, R0, #0
-AND R1, R1, #0
-ADD R1, R3, R1
-ZERO	ADD R0, R0, #1
-NOT R4, R4
-ADD R4, R4, #1
-ADD R1, R1, R4
-BRzp	ZERO
-ADD R0, R0, #-1
-NOT R4, R4
-ADD R4, R4, #1
-ADD R1, R1, R4
-RETURN	RET
-
-
+RETURND	LD R7, SAVE_R7_DIV	;RESTORE R7
+	RET			;RETURN
+SAVE_R7_DIV	.BLKW #1	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;input R3, R4
 ;out R0
-;EXP
+EXP
 ;your code goes here
-	
-	
-	
-ST R2, SAVE_R2
-	JSR POP
+	ST R7, SAVE_R7_EXP	;SAVE R7
+	JSR POP			;POP FROM STACK
+	ADD R5, R5, #0		
+	BRp RETURNE		;CHECK FOR UNDERFLOW
+	ADD R4, R0, #0		;STORE INTO R4
+	ADD R4, R4, #-1		;DECREMENT R4
+	JSR POP			;POP FROM STACK
 	ADD R5, R5, #0
-	BRp	RETURN
-	ADD R4, R0, #0
-	JSR POP
-	ADD R5, R5, #0
-	BRp	RETURN
-	ADD R3, R0, #0
-	AND R3, R3, #0
-LOOP_OU	ADD R2, R0, #0
-LOOP_IN	ADD R3, R3, R0
-	ADD R2, R2, #-1
-	BRp LOOP_IN
-	ADD R4, R4, #-1
-	BRp LOOP_OU
-	ADD R0, R3, #0
-	JSR PUSH
-	LD R2, SAVE_R2
-RETURN	RET
+	BRp RETURNE		;CHECK FOR UNDERFLOW
+	ADD R2, R0, #0		;STORE VALUE INTO R2
+	ST R2, SAVE_R2		;SAVE R2
+LOOP_EX	AND R3, R3, #0		;CLEAR R3
+	LD R2, SAVE_R2		;RESTORE R2
+LOOP_MU	ADD R3, R3, R0		;STORE R0 INTO R3
+	ADD R2, R2, #-1		;DECREMENT R2
+	BRp LOOP_MU		;IF R2 IS ZERO, LOOP
+	ADD R0, R3, #0		;STORE R3 INTO R0
+	ADD R4, R4, #-1		;DECREMENT R4
+	BRp LOOP_EX		;GO TO OUTER LOOP
+	
+	ADD R0, R3, #0		;STORE ANSWER INTO R0
+	JSR PUSH		;PUSH VALUE INTO STACK
+	AND R2, R2, #0		;CLEAR R2
+	
+RETURNE	LD R7, SAVE_R7_EXP	;RESTORE R7
+	RET			;RETURN
 SAVE_R2	.BLKW #1
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
-
-
-	
-	
-	
-	
-	
-	
+SAVE_R7_EXP	.BLKW #1
 ;IN:R0, OUT:R5 (0-success, 1-fail/overflow)
 ;R3: STACK_END R4: STACK_TOP
 ;
 PUSH	
+	ST R7, PUSH_SaveR7	;save R7
 	ST R3, PUSH_SaveR3	;save R3
 	ST R4, PUSH_SaveR4	;save R4
 	AND R5, R5, #0		;
 	LD R3, STACK_END	;
-	LD R4, STACk_TOP	;
+	LD R4, STACK_TOP	;
 	ADD R3, R3, #-1		;
 	NOT R3, R3		;
 	ADD R3, R3, #1		;
@@ -281,11 +340,12 @@ PUSH
 OVERFLOW
 	ADD R5, R5, #1		;
 DONE_PUSH
+	LD R7, PUSH_SaveR7	;
 	LD R3, PUSH_SaveR3	;
 	LD R4, PUSH_SaveR4	;
 	RET
 
-
+PUSH_SaveR7	.BLKW #1	;
 PUSH_SaveR3	.BLKW #1	;
 PUSH_SaveR4	.BLKW #1	;
 
@@ -294,6 +354,7 @@ PUSH_SaveR4	.BLKW #1	;
 ;R3 STACK_START R4 STACK_TOP
 ;
 POP	
+	ST R7, POP_SaveR7	;save R7
 	ST R3, POP_SaveR3	;save R3
 	ST R4, POP_SaveR4	;save R3
 	AND R5, R5, #0		;clear R5
@@ -310,11 +371,12 @@ POP
 UNDERFLOW
 	ADD R5, R5, #1		;
 DONE_POP
+	LD R7, POP_SaveR7	;
 	LD R3, POP_SaveR3	;
 	LD R4, POP_SaveR4	;
 	RET
 
-
+POP_SaveR7	.BLKW #1	;
 POP_SaveR3	.BLKW #1	;
 POP_SaveR4	.BLKW #1	;
 STACK_END	.FILL x3FF0	;
