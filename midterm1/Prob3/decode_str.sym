@@ -1,0 +1,18 @@
+// Symbol table
+// Scope level 0:
+//	Symbol Name       Page Address
+//	----------------  ------------
+//	READ              3009
+//	NUMORLET          3010
+//	SIGN              3019
+//	TRAVERSE          301F
+//	LOOP              301F
+//	CONTINUE_AST      3022
+//	CONTINUE          3026
+//	DONE              3028
+//	ASCII_ZERO        302B
+//	ASCII_NINE        302C
+//	ASCII_NEG_ASTERISK  302D
+//	ASCII_NEG_ZERO    302E
+//	STRING_START      302F
+

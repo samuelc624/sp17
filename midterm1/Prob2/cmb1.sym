@@ -1,0 +1,28 @@
+// Symbol table
+// Scope level 0:
+//	Symbol Name       Page Address
+//	----------------  ------------
+//	GRADEMASK_ONE     300D
+//	GRADEMASK_TWO     300E
+//	GRADEMASK_THREE   300F
+//	LOOP              3011
+//	FINISH            3018
+//	STRSTART          3019
+//	BITMASK           301A
+//	BITSWAP           301B
+//	LEFT              3023
+//	LAST8             3034
+//	SAVE_REG          3035
+//	SAVE_REG1         3036
+//	SAVE_REG2         3037
+//	SAVE_REG3         3038
+//	EXTRACT           3039
+//	ETOP              303E
+//	EINNER            3044
+//	EINNERBOT         304B
+//	EBOT              304D
+//	MASK              3051
+//	SAVER1            3052
+//	SAVER2            3053
+//	SAVER3            3054
+

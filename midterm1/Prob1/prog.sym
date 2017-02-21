@@ -1,0 +1,11 @@
+// Symbol table
+// Scope level 0:
+//	Symbol Name       Page Address
+//	----------------  ------------
+//	NEG               3007
+//	DONE0             300F
+//	DONE              3012
+//	PSQUARE           3015
+//	MULT              3018
+//	SAVE_R7           301D
+
