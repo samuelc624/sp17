@@ -40,7 +40,7 @@ double newrfind_halley(double a, double b, double c, double d, double e, double 
 	int flag = 0;
 double prev_x = x;
 double new_x;
-    for (i=0; i<10000; i++){
+    for (i=0; i<=10000; i++){
 		            new_x = prev_x - (2*fx_val(a,b,c,d,e,prev_x)*fx_dval(a, b,c,d,e,prev_x))/((2*(abs_double(fx_dval(a,b,c,d,e,prev_x)))*(abs_double(fx_dval(a,b,c,d,e,prev_x))))-fx_val(a,b,c,d,e,prev_x)*fx_ddval(a,b,c,d,e,prev_x));
 	   if (abs_double((new_x-prev_x))<0.000001){
 			    return new_x;
