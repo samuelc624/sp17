@@ -1,3 +1,9 @@
+/*
+This program works through several functions: abs_double, fx_val, fx_dval, fx_ddval. These are primarily used in the halley function in the giant formula provided to us in the MP4 wiki. If
+the difference is less than .000001, it returns the value. We increment by .5 everytime. If the root returned in Budan's theorem is 0, there are no roots in the polynomial. Otherwise, there
+are either no roots found or it will print out the list of roots.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -43,7 +49,9 @@ double new_x;
                             }
 		prev_x = new_x;
 		}
-
+/*
+Follow the formula and loop continuously (basically forever). Once the difference between new_x and prev_x is less than .000001, return new_x and break.
+*/
     //Change this to return the root found starting from the initial point x using Halley's method
 	if (flag == 0){
 	return 8013.60561;}
@@ -51,7 +59,8 @@ double new_x;
 
 int rootbound(double a, double b, double c, double d, double e, double r, double l)
 {
-    double first_l, second_l, third_l, fourth_l, fifth_l, v_l, first_r, second_r, third_r, fourth_r, fifth_r, v_r, upper;
+    double first_l, second_l, third_l, fourth_l, fifth_l, first_r, second_r, third_r, fourth_r, fifth_r, upper;
+		int v_l, v_r
 
     //Change this to return the upper bound on the number of roots of the polynomial in the interval (l, r)
     first_l=a;
@@ -59,7 +68,7 @@ int rootbound(double a, double b, double c, double d, double e, double r, double
     third_l=6*a*l*l+3*b*l+c;
     fourth_l=4*a*l*l*l+3*b*l*l+2*c*l+d;
     fifth_l=a*l*l*l*l+b*l*l*l+c*l*l+d*l+e;
-    //p_l = (first_l)x*x*x*x+(second_l)*x*x*x+(third_l)*x*x+(fourth_l)*x+(fifth_l);
+
   if ((first_l * second_l) < 0)
       {
         v_l++;
@@ -73,14 +82,15 @@ int rootbound(double a, double b, double c, double d, double e, double r, double
   if ((fourth_l * fifth_l) < 0) {
         v_l++;
       }
-
+/*
+Adds 1 to v_l as long as there is a sign difference between each coefficient.
+*/
 
     first_r=a;
     second_r=4*a*r+b;
     third_r=6*a*r*r+3*b*r+c;
     fourth_r=4*a*r*r*r+3*b*r*r+2*c*r+d;
     fifth_r=a*r*r*r*r+b*r*r*r+c*r*r+d*r+e;
-    //p_r = (first_r)x*x*x*x+(second_r)*x*x*x+(third_r)*x*x+(fourth_r)*x+(fifth_r);
   if ((first_r * second_r) < 0)
       {
         v_r++;
@@ -95,9 +105,15 @@ int rootbound(double a, double b, double c, double d, double e, double r, double
         v_r++;
       }
 
+			/*
+			Adds 1 to v_r as long as there is a sign difference between each coefficient.
+			*/
+
     upper = v_l-v_r;
     upper = abs_double(upper);
-
+/*
+Take difference of v_l and v_r and take absolute value.
+*/
     return upper;
 
 }
@@ -128,22 +144,27 @@ int main(int argc, char **argv)
     //If it is > 0 try to find the roots using newrfind function.
     //You may use the fval, fdval and fddval funtions accordingly in implementing the halleys's method.
     rootz = rootbound(a,b,c,d,e,r,l);
-    	if (rootz==0){
+    	if (rootz==0)
+			{
     		printf("The polynomial has no roots in the given interval.\n");
     		fclose(in);
     		return 0;
     		}
-    else{
-    for (l; l<=r; l+=0.5){
+    else
+		{
+    for (l; l<=r; l+=0.5)
+		{
     	x=l;
  	sam = newrfind_halley(a,b,c,d,e,x);
- 	if (sam == 8013.60561){
-	printf("No roots found.\n");
- 	}
- 	else{
- 	printf("Root found: %lf \n", sam);
- 	}
-    }
+ 	if (sam == 8013.60561)
+		{
+				printf("No roots found.\n");
+ 		}
+ 	else
+		{
+ 				printf("Root found: %lf \n", sam);
+ 		}
+    	}
     fclose(in);
     return 0;
     }
