@@ -43,8 +43,7 @@ double new_x;
     for (i=0; i<=10000; i++){
 		            new_x = prev_x - (2*fx_val(a,b,c,d,e,prev_x)*fx_dval(a, b,c,d,e,prev_x))/((2*(abs_double(fx_dval(a,b,c,d,e,prev_x)))*(abs_double(fx_dval(a,b,c,d,e,prev_x))))-fx_val(a,b,c,d,e,prev_x)*fx_ddval(a,b,c,d,e,prev_x));
 	   if (abs_double((new_x-prev_x))<0.000001){
-			    return new_x;
-      			    flag = 1;
+			    flag = 1;
 			             break;
                             }
 		prev_x = new_x;
@@ -53,13 +52,17 @@ double new_x;
 Follow the formula and loop continuously (basically forever). Once the difference between new_x and prev_x is less than .000001, return new_x and break.
 */
     //Change this to return the root found starting from the initial point x using Halley's method
-	if (flag == 0){
-	return 8013.60561;}
+	if (flag == 0)
+	{
+	return 8013.60561;
+	}
+	else
+		return new_x;
 }
 
 int rootbound(double a, double b, double c, double d, double e, double r, double l)
 {
-    double first_l, second_l, third_l, fourth_l, fifth_l, first_r, second_r, third_r, fourth_r, fifth_r, upper;
+    double first_l, second_l, third_l, fourth_l, fifth_l, first_r, second_r, third_r, fourth_r, fifth_r;
 		int v_l=0;
 		int v_r=0;
 		int upper=0;
@@ -154,7 +157,7 @@ int main(int argc, char **argv)
     		}
     else
 		{
-    for (l; l<=r; l+=0.5)
+    for (l=l; l<=r; l+=0.5)
 		{
     	x=l;
  	sam = newrfind_halley(a,b,c,d,e,x);
