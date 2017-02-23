@@ -60,7 +60,9 @@ Follow the formula and loop continuously (basically forever). Once the differenc
 int rootbound(double a, double b, double c, double d, double e, double r, double l)
 {
     double first_l, second_l, third_l, fourth_l, fifth_l, first_r, second_r, third_r, fourth_r, fifth_r, upper;
-		int v_l, v_r, upper;
+		int v_l=0;
+		int v_r=0;
+		int upper=0;
 
     //Change this to return the upper bound on the number of roots of the polynomial in the interval (l, r)
     first_l=a;
