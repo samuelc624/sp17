@@ -1,3 +1,10 @@
+/*This part of the program begins with the set_seed function that starts the rand number generator function to be used to store random numbers into an array.
+ *The game then starts and generates 4 random numbers and stores them into 4 variables.
+ *make_guess function then starts and reads four inputs from user and checks/stores them into an array. The 4 random numbers are also stored into an array.
+ *The next part reads the guesses from user and check to see if they match the solution array. If they do, the match array will be set to 1 to indicate a match.
+ *After every guess, the program will print out the number of tries, the number of numbers correct and incorrect. At the end, the program will terminate.
+ */
+
 /*
  *
  * prog5.c - source file adapted from UIUC ECE198KL Spring 2013 Program 4
@@ -95,15 +102,15 @@ void
 start_game (int* one, int* two, int* three, int* four)
 {
     //your code here
-  *one = ((rand())%8)+1;
-  *two = ((rand())%8)+1;
-  *three = ((rand())%8)+1;
-  *four = ((rand())%8)+1;
-  guess_number = 1;
-  solution1= *one;
-  solution2= *two;
-  solution3= *three;
-  solution4=*four;
+  *one = ((rand())%8)+1;        //set *one to random number
+  *two = ((rand())%8)+1;        //set *two to random number
+  *three = ((rand())%8)+1;      //set *three to random number
+  *four = ((rand())%8)+1;       //set *four to random number
+  guess_number = 1;             //flag guess_number
+  solution1= *one;              //define solution1 to be value of random number
+  solution2= *two;              //define solution2 to be value of random number
+  solution3= *three;            //define solution3 to be value of random number
+  solution4=*four;              //define solution4 to be value of random number
 
 }
 
@@ -135,14 +142,14 @@ int make_guess (const char guess_str[], int* one, int* two, int* three, int* fou
 //  One thing you will need to read four integers from the string guess_str, using a process
 //  similar to set_seed
 //  The statement, given char post[2]; and four integers w,x,y,z,
-int w,x,y,z;
+int w,x,y,z;                    //initialization
 char post[2];
 
-int scancheck;
+int scancheck;                                                                  //see below comments for functionality
 int validity=0;
-scancheck = sscanf (guess_str, "%d%d%d%d%1s", &w, &x, &y, &z, post);
-if (scancheck==4 && 0<w && w<9 && 0<x&&x<9 && 0<y&&y<9 && 0<z&&z<9){
-  validity=1;
+scancheck = sscanf (guess_str, "%d%d%d%d%1s", &w, &x, &y, &z, post);             //store guess string into w, x, y, z
+if (scancheck==4 && 0<w && w<9 && 0<x&&x<9 && 0<y&&y<9 && 0<z&&z<9){             //checks if 4 integers and if they are >0 and <9
+  validity=1;                                                                    // valid flag
 }
 else {
   validity=0;
@@ -154,17 +161,17 @@ else {
 //  Otherwise, it is invalid.
 //  Feel free to use this sscanf statement, delete these comments, and modify the return statement as needed
 if (validity ==0)
-{ printf("make_guess: invalid guess\n");
+{ printf("make_guess: invalid guess\n");                        //if guess is not an integer between 0-9, print invalid guess
   return 0;}
 else{
-
-int solutions[4];
+                                                                  //calculates number of perfect and misplaced matches
+int solutions[4];                                         //initialize solution array
 solutions[0]= solution1;
 solutions[1]= solution2;
 solutions[2]= solution3;
 solutions[3]= solution4;
 
-int guesses[4];
+int guesses[4];                                           //initialize guess array
 guesses[0]=w;
 *one = w;
 guesses[1]=x;
@@ -178,7 +185,7 @@ int i=0;
 int matches[4] = {0,0,0,0};
 int misplaced[4] = {-1,-1,-1,-1};
 
-if (solution1==w){
+if (solution1==w){                                        //if any of the solutions are equal to the guesses, change value of that variable in the perfect match array to 1
   matches[0]=1;
 }
 if (solution2==x){
@@ -211,15 +218,15 @@ for (i=0; i<4;  i++)
 int number_of_matches = 0;
 int number_of_misplace = 0;
 for (i=0;i<4;i++){
-  if (matches[i]==1){
-    number_of_matches++;
+  if (matches[i]==1){             //checks array for # of correct guesses
+    number_of_matches++;          //increments number of correct guesses by one
   }
-  if (misplaced[i]>=0){
-    number_of_misplace++;
+  if (misplaced[i]>=0){           //checks array for number of incorrect guesses
+    number_of_misplace++;         //number_of_misplace=number_of_misplace+1
   }
 }
-printf("With guess %d, you got %d perfect matches and %d misplaced matches.\n",guess_number,number_of_matches,number_of_misplace);
-guess_number++;
+printf("With guess %d, you got %d perfect matches and %d misplaced matches.\n",guess_number,number_of_matches,number_of_misplace); // prints out result of guesses
+guess_number++; //guess_number=guess_number+1
 return 1;
 }
 
