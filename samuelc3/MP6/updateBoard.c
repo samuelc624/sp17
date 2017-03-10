@@ -187,4 +187,3 @@ if (change==0 || alive==0){
 else{
 	return 0;
 }
-}
