@@ -1,11 +1,3 @@
-/*The first function checks if the selected element is on the sides of the matrix. It then checks if the neighbors are 1 and adds 1 to the count.
-*updateboard copies the current board to another one and updates it to the next stage.
-*The last function checks if the alive stay alive for the next stage.
-*/
-
-
-
-
 /*
  * countLiveNeighbor
  * Inputs:
@@ -20,75 +12,74 @@
  * Pay attention for the edge and corner cells, they have less neighbors.
  */
 
-int countLiveNeighbor(int* board, int boardRowSize, int boardColSize, int row, int col){
-	int countLiveNeighbor(int* board, int boardRowSize, int boardColSize, int row, int col)
-	{
-		int* init = board;
-		int* final = init + boardRowSize*boardColSize;
-		int* current = init + row*boardColSize + col;            //corresponding pointer to value in array of row and col
+int countLiveNeighbor(int* board, int boardRowSize, int boardColSize, int row, int col)
+{
+	int* init = board;
+	int* final = init + boardRowSize*boardColSize;
+	int* current = init + row*boardColSize + col;            //corresponding pointer to value in array of row and col
 
-		int alive = 0;
-
+	int alive = 0;
 
 
-		if ((current+1) < final)                                //Checks all 8 cases for neighbors and first sees if they lie out of bound
-		{                                                       //before accessing the values and checking if they are 1 (alive)
-			if (*(current+1) == 1)
-			{
-				alive++;
-			}
-		}
-		if ((current-1) >= init)
+
+	if ((current+1) < final)                                //Checks all 8 cases for neighbors and first sees if they lie out of bound
+	{                                                       //before accessing the values and checking if they are 1 (alive)
+		if (*(current+1) == 1)
 		{
-			if (*(current-1) == 1)
-			{
-				alive++;
-			}
+			alive++;
 		}
-		if ((current+boardColSize) < final)
-		{
-			if (*(current+boardColSize) == 1)
-			{
-				alive++;
-			}
-		}
-		if ((current-boardColSize) >= init)
-		{
-			if (*(current-boardColSize) == 1)
-			{
-				alive++;
-			}
-		}
-		if ((current+boardColSize-1) < final && (current+boardColSize-1) >= init)
-		{
-			if (*(current+boardColSize-1) == 1)
-			{
-				alive++;
-			}
-		}
-		if ((current+boardColSize+1) < final)
-		{
-			if (*(current+boardColSize+1) == 1)
-			{
-				alive++;
-			}
-		}
-		if ((current-boardColSize+1) < final && (current-boardColSize+1) >= init)
-		{
-			if (*(current-boardColSize+1) == 1)
-			{
-				alive++;
-			}
-		}
-		if ((current-boardColSize-1) >= init)
-		{
-			if (*(current-boardColSize-1) == 1)
-			{
-				alive++;
-			}
-		}
-		return alive;                                                   //returns the # of alive cells
 	}
+	if ((current-1) >= init)
+	{
+		if (*(current-1) == 1)
+		{
+			alive++;
+		}
+	}
+	if ((current+boardColSize) < final)
+	{
+		if (*(current+boardColSize) == 1)
+		{
+			alive++;
+		}
+	}
+	if ((current-boardColSize) >= init)
+	{
+		if (*(current-boardColSize) == 1)
+		{
+			alive++;
+		}
+	}
+	if ((current+boardColSize-1) < final && (current+boardColSize-1) >= init)
+	{
+		if (*(current+boardColSize-1) == 1)
+		{
+			alive++;
+		}
+	}
+	if ((current+boardColSize+1) < final)
+	{
+		if (*(current+boardColSize+1) == 1)
+		{
+			alive++;
+		}
+	}
+	if ((current-boardColSize+1) < final && (current-boardColSize+1) >= init)
+	{
+		if (*(current-boardColSize+1) == 1)
+		{
+			alive++;
+		}
+	}
+	if ((current-boardColSize-1) >= init)
+	{
+		if (*(current-boardColSize-1) == 1)
+		{
+			alive++;
+		}
+	}
+	return alive;                                                   //returns the # of alive cells
+}
 /*
  * Update the game board to the next step.
  * Input:
@@ -99,6 +90,7 @@ int countLiveNeighbor(int* board, int boardRowSize, int boardColSize, int row, i
  * Output: board is updated with new values for next step.
  */
 void updateBoard(int* board, int boardRowSize, int boardColSize) {
+
 int row=0;
 int col=0;
 int neighbors=0;
@@ -110,7 +102,7 @@ int maxsize=boardRowSize*boardColSize;
 int oldboard[maxsize];
 int i = 0;
 for (i=0;i<=maxsize;i++){
-	oldboard[i] = *(board+i);						//copies the old game of life board to a new one
+	oldboard[i] = *(board+i);
 }
 
 for (row=0; row<=boardRowSize; row++){
@@ -148,13 +140,15 @@ for (i=0; i<=maxsize; i++){
  * current step or there is no alive cells at all.
  * return 0 if the alive cells change for the next step.
  */
+
+
 int aliveStable(int* board, int boardRowSize, int boardColSize){
 
 int maxsize=boardRowSize*boardColSize;
 int oldboard[maxsize];
 int i = 0;
 for (i=0;i<=maxsize;i++){
-	oldboard[i] = *(board+i);					//copies the old game of life board to a new one
+	oldboard[i] = *(board+i);
 }
 
 int row=0;
@@ -168,6 +162,7 @@ for (row=0; row<=boardRowSize; row++){
 	for (col=0; col<=boardColSize; col++){
 		locations=(boardColSize*row)+col;
 		cellstatus=oldboard[locations];
+
 		neighbors=countLiveNeighbor(board, boardRowSize, boardColSize, row, col);
 		if (cellstatus==1 && (neighbors == 2 || neighbors == 3)){
 			alive++;
@@ -186,4 +181,6 @@ if (change==0 || alive==0){
 }
 else{
 	return 0;
+}
+
 }
