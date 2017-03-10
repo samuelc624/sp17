@@ -1,3 +1,11 @@
+/*The first function checks if the selected element is on the sides of the matrix. It then checks if the neighbors are 1 and adds 1 to the count.
+*updateboard copies the current board to another one and updates it to the next stage.
+*The last function checks if the alive stay alive for the next stage.
+*/
+
+
+
+
 /*
  * countLiveNeighbor
  * Inputs:
@@ -102,14 +110,14 @@ int maxsize=boardRowSize*boardColSize;
 int oldboard[maxsize];
 int i = 0;
 for (i=0;i<=maxsize;i++){
-	oldboard[i] = *(board+i);
+	oldboard[i] = *(board+i);				//copies old board to dummy board
 }
 
 for (row=0; row<=boardRowSize; row++){
 	for (col=0; col<=boardColSize; col++){
 		locations=(boardColSize*row)+col;
 		cellstatus=*(board+locations);
-		neighbors=countLiveNeighbor(board, boardRowSize, boardColSize, row, col);
+		neighbors=countLiveNeighbor(board, boardRowSize, boardColSize, row, col);     //does countLiveNeighbor function
 		if (cellstatus==1 && (neighbors == 2 || neighbors == 3)){
 			cellstatus = 1;
 		}
@@ -124,7 +132,7 @@ for (row=0; row<=boardRowSize; row++){
 }
 
 for (i=0; i<=maxsize; i++){
-	*(board+i) = oldboard[i];
+	*(board+i) = oldboard[i];				//copipes dummy board to old board
 }
 
 }
@@ -148,7 +156,7 @@ int maxsize=boardRowSize*boardColSize;
 int oldboard[maxsize];
 int i = 0;
 for (i=0;i<=maxsize;i++){
-	oldboard[i] = *(board+i);
+	oldboard[i] = *(board+i);				//copies dummy board to the old board
 }
 
 int row=0;
@@ -163,7 +171,7 @@ for (row=0; row<=boardRowSize; row++){
 		locations=(boardColSize*row)+col;
 		cellstatus=oldboard[locations];
 
-		neighbors=countLiveNeighbor(board, boardRowSize, boardColSize, row, col);
+		neighbors=countLiveNeighbor(board, boardRowSize, boardColSize, row, col);			//does countLiveNeighbor function
 		if (cellstatus==1 && (neighbors == 2 || neighbors == 3)){
 			alive++;
 		}
