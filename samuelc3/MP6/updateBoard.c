@@ -1,3 +1,11 @@
+/*The first function checks if the selected element is on the sides of the matrix. It then checks if the neighbors are 1 and adds 1 to the count.
+*updateboard copies the current board to another one and updates it to the next stage.
+*The last function checks if the alive stay alive for the next stage.
+*/
+
+
+
+
 /*
  * countLiveNeighbor
  * Inputs:
@@ -13,156 +21,74 @@
  */
 
 int countLiveNeighbor(int* board, int boardRowSize, int boardColSize, int row, int col){
+	int countLiveNeighbor(int* board, int boardRowSize, int boardColSize, int row, int col)
+	{
+		int* init = board;
+		int* final = init + boardRowSize*boardColSize;
+		int* current = init + row*boardColSize + col;            //corresponding pointer to value in array of row and col
 
-int count=0;
-int location=(boardColSize*row+col);
-int edgerow =0;
-int edgecol =0;
-if (row==0){
-	edgerow=1;
-}
-if (row == boardRowSize){
-	edgerow=2;
-}
-if (col==0){
-	edgecol=1;
-}
-if (col == boardColSize){
-	edgecol=2;
-}
-if (edgecol==0 && edgerow==0){
-	if (*(board+location-boardColSize)==1){
-		count++;
-	}
-	if (*(board+location+boardColSize)==1){
-		count++;
-	}
-	if (*(board+location+1)==1){
-		count++;
-	}
-	if (*(board+location-1)==1){
-		count++;
-	}
-	if (*(board+location-boardColSize+1)==1){
-		count++;
-	}
-	if (*(board+location-boardColSize-1)==1){
-		count++;
-	}
-	if (*(board+location+boardColSize+1)==1){
-		count++;
-	}
-	if (*(board+location+boardColSize-1)==1){
-		count++;
-	}
-}
-else if (edgerow==1) {
-	if (*(board+location+boardColSize)==1){
-		count++;
-	}
-	if (edgecol==0){
-		if (*(board+location-1)==1){
-			count++;
-		}
-		if (*(board+location+1)==1){
-			count++;
-		}
-		if (*(board+location+boardColSize+1)==1){
-			count++;
-		}
-		if (*(board+location+boardColSize-1)==1){
-			count++;
-		}
-	}
-	else if (edgecol==1){
-		if (*(board+location+1)==1){
-			count++;
-		}
-		if (*(board+location+boardColSize+1)==1){
-			count++;
-		}
-	}
-	else if (edgecol==2){
-		if (*(board+location-1)==1){
-			count++;
-		}
-		if (*(board+location+boardColSize-1)==1){
-			count++;
-		}
-	}
-}
-else if (edgerow==2){
-	if (*(board+location-boardColSize)==1){
-		count++;
-	}
-	if (edgecol==0){
-		if (*(board+location+1)==1){
-			count++;
-		}
-		if (*(board+location-1)==1){
-			count++;
-		}
-		if (*(board+location-boardColSize+1)==1){
-			count++;
-		}
-		if (*(board+location-boardColSize-1)==1){
-			count++;
-		}
-	}
-	else if (edgecol==1){
-		if (*(board+location+1)==1){
-			count++;
-		}
-		if (*(board+location-boardColSize+1)==1){
-			count++;
-		}
-	}
-	else if (edgecol==2){
-		if (*(board+location-1)==1){
-			count++;
-		}
-		if (*(board+location-boardColSize-1)==1){
-			count++;
-		}
-	}
-}
-else{
-	if (*(board+location-boardColSize)==1){
- 		count++;
- 	}
- 	if (*(board+location+boardColSize)==1){
- 		count++;
- 	}
-	if (edgecol==1){
-		if (*(board+location+1)==1){
-			count++;
-		}
-		if (*(board+location-boardColSize+1)==1){
-			count++;
-		}
-		if (*(board+location+boardColSize+1)==1){
-			count++;
-		}
-	}
-else if (edgecol==2){
-	if (*(board+location-1)==1){
- 		count++;
- 	}
- 	if (*(board+location-boardColSize-1)==1){
- 		count++;
- 	}
- 	if (*(board+location+boardColSize-1)==1){
- 		count++;
- 	}
- }
-}
+		int alive = 0;
 
 
 
-return count;
-
-
-}
+		if ((current+1) < final)                                //Checks all 8 cases for neighbors and first sees if they lie out of bound
+		{                                                       //before accessing the values and checking if they are 1 (alive)
+			if (*(current+1) == 1)
+			{
+				alive++;
+			}
+		}
+		if ((current-1) >= init)
+		{
+			if (*(current-1) == 1)
+			{
+				alive++;
+			}
+		}
+		if ((current+boardColSize) < final)
+		{
+			if (*(current+boardColSize) == 1)
+			{
+				alive++;
+			}
+		}
+		if ((current-boardColSize) >= init)
+		{
+			if (*(current-boardColSize) == 1)
+			{
+				alive++;
+			}
+		}
+		if ((current+boardColSize-1) < final && (current+boardColSize-1) >= init)
+		{
+			if (*(current+boardColSize-1) == 1)
+			{
+				alive++;
+			}
+		}
+		if ((current+boardColSize+1) < final)
+		{
+			if (*(current+boardColSize+1) == 1)
+			{
+				alive++;
+			}
+		}
+		if ((current-boardColSize+1) < final && (current-boardColSize+1) >= init)
+		{
+			if (*(current-boardColSize+1) == 1)
+			{
+				alive++;
+			}
+		}
+		if ((current-boardColSize-1) >= init)
+		{
+			if (*(current-boardColSize-1) == 1)
+			{
+				alive++;
+			}
+		}
+		return alive;                                                   //returns the # of alive cells
+	}
 /*
  * Update the game board to the next step.
  * Input:
@@ -184,7 +110,7 @@ int maxsize=boardRowSize*boardColSize;
 int oldboard[maxsize];
 int i = 0;
 for (i=0;i<=maxsize;i++){
-	oldboard[i] = *(board+i);
+	oldboard[i] = *(board+i);						//copies the old game of life board to a new one
 }
 
 for (row=0; row<=boardRowSize; row++){
@@ -228,7 +154,7 @@ int maxsize=boardRowSize*boardColSize;
 int oldboard[maxsize];
 int i = 0;
 for (i=0;i<=maxsize;i++){
-	oldboard[i] = *(board+i);
+	oldboard[i] = *(board+i);					//copies the old game of life board to a new one
 }
 
 int row=0;
