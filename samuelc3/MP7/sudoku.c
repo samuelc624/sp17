@@ -1,3 +1,10 @@
+/*The first function checks the row by incrementing the for loop and checking if the value is in the row. The second function checks the column to see if the
+ *val is there. The 3x3 val check divides the i and j by three and checks the 3x3 array to see if the value is already there. If any of the values are in the
+ *row/col/grid, it will return 1. The solver then checks to see if the val check is or not, filling in the space with the designated val. The print
+ *function then goes through every value in the array and prints it out.
+*/
+
+
 #include "sudoku.h"
 
 //-------------------------------------------------------------------------------------------------
@@ -14,7 +21,7 @@ int is_val_in_row(const int val, const int i, const int sudoku[9][9]) {
   int k;
   int flag=0;
   // BEG TODO
-  for (k=0;k<9;k++){
+  for (k=0;k<9;k++){          //goes through each row checking through val
     if (val==sudoku[i][k]){
       flag= 1;
       break;
@@ -41,7 +48,7 @@ int is_val_in_col(const int val, const int j, const int sudoku[9][9]) {
   int l;
   int flag=0;
   // BEG TODO
-  for (l=0; l<9; l++){
+  for (l=0; l<9; l++){            //goes through each column checking for val
     if (val==sudoku[l][j]){
       flag = 1;
       break;
@@ -69,11 +76,11 @@ int is_val_in_3x3_zone(const int val, const int i, const int j, const int sudoku
 
   // BEG TODO
 int k, l;
-k = (i/3)*3;
-l = (j/3)*3;
+k = (i/3)*3;    //sets k to be one side of grid
+l = (j/3)*3;    //sets l to be one side of grid
 int p,q;
 int flag=0;
-for (p=k;p<(k+3);p++){
+for (p=k;p<(k+3);p++){          //increments coordinate in grid
   for (q=l;q<(l+3);q++){
     if (sudoku[p][q]==val){
       flag++;
@@ -129,7 +136,7 @@ if (flag1==81){
     for(j=0; j<9; j++){
       if (sudoku[i][j]==0){
         for (val=1; val<10; val++){
-          if (is_val_valid(val,i,j,sudoku)==1){
+          if (is_val_valid(val,i,j,sudoku)==1){     //if the val_valid is 1, then set the coordinate to val
             sudoku[i][j]=val;
             if(solve_sudoku(sudoku)){
               return 1;
@@ -149,7 +156,7 @@ if (flag1==81){
 // Procedure: print_sudoku
 void print_sudoku(int sudoku[9][9])
 {
-  int i, j;
+  int i, j;                               //prints out sudoku values 
   for(i=0; i<9; i++) {
     for(j=0; j<9; j++) {
       printf("%2d", sudoku[i][j]);
