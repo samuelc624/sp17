@@ -69,10 +69,9 @@ int is_val_in_3x3_zone(const int val, const int i, const int j, const int sudoku
   // BEG TODO
   int n, m;
 	int flag = 0;
-
-	for(m=i-1; m<=i+1; m++){
-	   for(n=j-1; n<=j+1; n++){
-	       if(sudoku[i][j] == val)
+	for(m=i-1; m<=i+1; i++){
+	   for(n=j-1; n<=j+1; j++){
+	       if(sudoku[m][n] == val)
 		flag = 1;
 		}
 	}
