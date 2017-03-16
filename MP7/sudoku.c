@@ -68,8 +68,8 @@ int is_val_in_3x3_zone(const int val, const int i, const int j, const int sudoku
   assert(j>=0 && j<9);
   // BEG TODO
   int n, m;
-  int x = i;
-  int y = j;
+  int x=i;
+  int y=j;
 	int flag = 0;
 
   for(m=x-1; m<=x+1; x++){
