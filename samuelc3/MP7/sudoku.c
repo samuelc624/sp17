@@ -64,24 +64,29 @@ else{
 // Return true if val already existed in the 3x3 zone corresponding to (i, j)
 int is_val_in_3x3_zone(const int val, const int i, const int j, const int sudoku[9][9]) {
 
-  assert(i>=0 && i<9);
-  assert(j>=0 && j<9);
-  // BEG TODO
-  int n, m;
-  int x=i;
-  int y=j;
-	int flag = 0;
+  assert(i>=0 && i<9 && j>=0 && j<9);
 
-  for(m=x-1; m<=x+1; x++){
-	   for(n=y-1; n<=y+1; y++){
-	       if(sudoku[m][n] == val)
-		flag = 1;
-		}
-	}
-if(flag==1)
-	return 1;
-else
-	return 0;
+
+  // BEG TODO
+int k, l;
+k = (i/3)*3;
+l = (j/3)*3;
+int p,q;
+int flag=0;
+for (p=k;p<(k+3);p++){
+  for (q=l;q<(l+3);q++){
+    if (sudoku[p][q]==val){
+      flag++;
+    }
+  }
+}
+if (flag>0){
+  return 1;
+}
+else{
+  return 0;
+}
+
 
   // END TODO
 }
@@ -93,8 +98,7 @@ int is_val_valid(const int val, const int i, const int j, const int sudoku[9][9]
   assert(i>=0 && i<9 && j>=0 && j<9);
 
   // BEG TODO
-
-  if (is_val_in_3x3_zone(val, i, j, sudoku)==0 && is_val_in_col(val, j, sudoku)==0 && is_val_in_row(val, i, sudoku)==0){
+  if (is_val_in_3x3_zone(val, i, j, sudoku)==0 && is_val_in_row(val,i,sudoku)==0 && is_val_in_col(val, j, sudoku)==0){
     return 1;
   }
   else {return 0;}
@@ -103,29 +107,43 @@ int is_val_valid(const int val, const int i, const int j, const int sudoku[9][9]
 
 // Procedure: solve_sudoku
 // Solve the given sudoku instance.
+
 int solve_sudoku(int sudoku[9][9]) {
+
   int i,j,val;
+  int flag1=0;
+  int flag2=0;
   // BEG TODO.
-  for (i=0; i<9; i++){
-    for (j=0; j<9; j++){
-      if (sudoku[i][j]==0){
-        for(val=1;val<10;val++){
-          if (is_val_valid(val, i, j, sudoku)==1){
-            sudoku[i][j]=val;
-            break;
-          }
-          else{
-            continue;
-          }
-        }
-        }
-      else{
-        continue;
+  for (i=0;i<9;i++){
+    for (j=0;j<9;j++){
+      if (sudoku[i][j]>0){
+        flag1++;
       }
     }
   }
-  return 0;
- // END TODO.
+if (flag1==81){
+  return 1;
+}
+
+  for (i=0; i<9; i++){
+    for(j=0; j<9; j++){
+      if (sudoku[i][j]==0){
+        for (val=1; val<10; val++){
+          if (is_val_valid(val,i,j,sudoku)==1){
+            sudoku[i][j]=val;
+            if(solve_sudoku(sudoku)){
+              return 1;
+            }
+            sudoku[i][j]=0;
+          }
+        }
+        return 0;
+      }
+  }
+
+}
+
+  // END TODO.
 }
 
 // Procedure: print_sudoku
