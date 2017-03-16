@@ -93,8 +93,8 @@ int is_val_valid(const int val, const int i, const int j, const int sudoku[9][9]
   assert(i>=0 && i<9 && j>=0 && j<9);
 
   // BEG TODO
-  if (isval)
-  if (is_val_in_3x3_zone(val, i, j, sudoku)==0 && is_val_in_col(val, j, sudoku[i][j])==0 && is_val_in_row(val, i, sudoku)==0){
+
+  if (is_val_in_3x3_zone(val, i, j, sudoku)==0 && is_val_in_col(val, j, sudoku)==0 && is_val_in_row(val, i, sudoku)==0){
     return 1;
   }
   else {return 0;}
