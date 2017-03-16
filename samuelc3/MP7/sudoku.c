@@ -75,7 +75,6 @@ int is_val_in_3x3_zone(const int val, const int i, const int j, const int sudoku
 	       if(val == sudoku[n][m])
          {
 		flag = 1;
-	break;
 	}
 		}
 	}
