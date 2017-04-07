@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "maze.h"
 
- 
+
 int main(int argc, char **argv)
 {
     if (argc < 2)
@@ -37,6 +37,6 @@ int main(int argc, char **argv)
     printf("\nDestroying maze\n");
 
     destroyMaze(maze);
- 
+
     return 0;
 }
