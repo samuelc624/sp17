@@ -19,12 +19,32 @@ void printList(node * Node) {
 
 /*Implement this function for Lab 10*/
 void reverse(node** head){
+	node*prev = NULL;
+	node*current = *head;
+	node*next;
 
+	while(current!=NULL){
+		next = current -> next;
+		current -> next = prev;
+		prev = current;
+		current = next;
+	}
+	*head = prev;
 }
 
 /*Implement this function for Lab 10*/
 void removeDuplicates(node* head){
-
+	node * current = head;
+	node * temp;
+	while (current!=NULL && current -> next != NULL) {
+		if (current -> data == current -> next -> next -> data) {
+			temp = current -> next -> next;
+			free(current -> next);
+			current -> next = temp;
+		}
+		else
+			current = current -> next;
+	}
 }
 
 int main() {
@@ -39,7 +59,7 @@ int main() {
                 temp = head;
 	        head = (node *) malloc(sizeof(node));
 	        head->data = i;
-	        head->next = temp;     
+	        head->next = temp;
             }
         }else{
             temp = head;
