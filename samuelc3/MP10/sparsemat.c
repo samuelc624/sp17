@@ -278,11 +278,11 @@ sp_tuples * mult_tuples(sp_tuples * matA, sp_tuples * matB){
   double cVal = 0, bVal, aVal;
   matC->m = matA->m;
   matC->n = matB->n;
-  sp_tuples_node * aNode = matA->tuples_head;
+  sp_tuples_node * aNode = matA->tuples_head;   //set pointer values
   sp_tuples_node * bNode = matB->tuples_head;
   while(aNode != NULL)
   {
-    iA = aNode->row;
+    iA = aNode->row;      //set iA values
     jA = aNode->col;
     aVal = aNode->value;
     bNode = matB->tuples_head;
@@ -290,11 +290,12 @@ sp_tuples * mult_tuples(sp_tuples * matA, sp_tuples * matB){
     {
       bNode = bNode->next;
     }
-    while(bNode != NULL && bNode->row == jA)
+    while(bNode != NULL && bNode->row == jA)    //if not NULL and bNode = jA
     {
       //iB = bNode->row;
-      jB = bNode->col;
+      jB = bNode->col;      //set new values
       bVal = bNode->value;
+      aVal = aNode->value;
       cVal = bVal * aVal;
       set_tuples(matC, iA, jB, cVal);
       bNode = bNode->next;
