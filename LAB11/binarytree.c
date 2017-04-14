@@ -29,7 +29,7 @@ void insert_node( int d1, NODE* p1 ){
 		p1->right = init_node( d1, NULL, NULL );
 	else if( p1->d > d1 && p1->left == NULL )
 		p1->left = init_node( d1, NULL, NULL );
-	else if( p1->d < d1 && p1->right != NULL ) 
+	else if( p1->d < d1 && p1->right != NULL )
 		insert_node( d1, p1->right );
 	else
 		insert_node( d1, p1->left );
@@ -51,10 +51,16 @@ NODE* create_tree(int a[], int size )
 /* find lowest common ancestor of two numbers  */
 NODE* lowest_common_ancestor (NODE* root , int first_number , int second_number )
 {
-	/* your code goes here */
 
+int small_number = first_number < second_number ? first_number : second_number;
+int big_number = first_number > second_number ? first_number : second_number;
+
+if (root -> d >= small_number  && root -> d <= big_number) {
+	return root;
+	}
+else if (root -> d > big_number){
+	return lowest_common_ancestor(root -> left, first_number, second_number);
+	}
+else
+	return lowest_common_ancestor(root -> right, first_number, second_number);
 }
-
-
-
-
