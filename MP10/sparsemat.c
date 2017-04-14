@@ -44,12 +44,12 @@ double gv_tuples(sp_tuples * mat_t,int row,int col)
   sp_tuples_node * pCell = mat_t->tuples_head;  //node pointer to cell
   if(pCell != NULL)
   {
-    headLoc = (pCell->row)*totCol + (pCell->col);   //if not NULL,
+    headLoc = (pCell->row)*totCol + (pCell->col);   //if not NULL, headLoc equals the row*totCol + col
   }
   int goalLoc = row * totCol + col;
   while( pCell != NULL && headLoc < goalLoc)
   {
-    pCell = pCell->next;
+    pCell = pCell->next;        //pCell is the next node if not NULL and headLoc < goalLoc
     if(pCell != NULL)
     {
       headLoc = (pCell->row)*totCol + (pCell->col);
@@ -66,7 +66,7 @@ double gv_tuples(sp_tuples * mat_t,int row,int col)
 
 void set_tuples(sp_tuples * mat_t, int row, int col, double value)
 {
-  sp_tuples_node * pCell = mat_t->tuples_head;
+  sp_tuples_node * pCell = mat_t->tuples_head;    //initialize pointers
   sp_tuples_node * needAdd = NULL;
   int totCol = mat_t->n;
   int goalLoc = row*totCol + col;
@@ -74,7 +74,7 @@ void set_tuples(sp_tuples * mat_t, int row, int col, double value)
   //int currLoc = 0;
   if(pCell != NULL)
   {
-    headLoc = (pCell->row)*totCol + (pCell->col);
+    headLoc = (pCell->row)*totCol + (pCell->col);  //same initialization
   }
   sp_tuples_node * cCell = NULL;
   if(value != 0)
@@ -82,10 +82,10 @@ void set_tuples(sp_tuples * mat_t, int row, int col, double value)
 
     if(mat_t->tuples_head == NULL || goalLoc < headLoc)
     {
-      needAdd = malloc(sizeof(sp_tuples_node));
-      needAdd->row = row;
-      needAdd->col = col;
-      needAdd->value = value;
+      needAdd = malloc(sizeof(sp_tuples_node));   //allocate memory for node and
+      needAdd->row = row;       //row
+      needAdd->col = col;       //col
+      needAdd->value = value;   //and value
       needAdd->next = mat_t->tuples_head;
       mat_t->tuples_head = needAdd;
       mat_t->nz = mat_t->nz + 1;
@@ -93,7 +93,7 @@ void set_tuples(sp_tuples * mat_t, int row, int col, double value)
     }
     else if((row*totCol + col) == headLoc)
     {
-      (mat_t->tuples_head)->value = value;
+      (mat_t->tuples_head)->value = value;    //value from tuples_head is equal to value
       //mat_t->nz = mat_t->nz + 1;
       return;
     }
@@ -148,7 +148,7 @@ void set_tuples(sp_tuples * mat_t, int row, int col, double value)
     }
 
   }
-  else
+  else        //if value = 0
   {
     if(mat_t->tuples_head == NULL || gv_tuples(mat_t,row,col) == 0)
     {
@@ -170,14 +170,14 @@ void set_tuples(sp_tuples * mat_t, int row, int col, double value)
       {
         return;
       }
-      cCell = cCell->next;
+      cCell = cCell->next;      //next in linked list
     }
-    pCell->next = cCell->next;
+    pCell->next = cCell->next;     //next in linked list for both Cell
     if(cCell != NULL)
     {
       mat_t->nz = mat_t->nz - 1;
     }
-    free(cCell);
+    free(cCell);        //free cCell from mem allocation
     return;
   }
 
@@ -187,14 +187,14 @@ void set_tuples(sp_tuples * mat_t, int row, int col, double value)
 
 void save_tuples(char * file_name, sp_tuples * mat_t)
 {
-  FILE *printer = fopen(file_name, "w");
+  FILE *printer = fopen(file_name, "w");    //int file pointer
   int r = mat_t->m;
   int c = mat_t->n;
   fprintf(printer, "%d %d \n", r, c);
   sp_tuples_node * pCell = mat_t->tuples_head;
   int row, col;
   double value;
-  while(pCell != NULL)
+  while(pCell != NULL)    //if pCell isn't NULL, set all values from the file
   {
     row = pCell->row;
     col = pCell->col;
@@ -255,7 +255,7 @@ sp_tuples * add_tuples(sp_tuples * matA, sp_tuples * matB)
     if(headOri != NULL && oriLoc == bLoc)
     {
       //aVal = headOri->value;
-      set_tuples(matC, bR, bC, bVal + gv_tuples(matA,bR,bC));
+      set_tuples(matC, headOri->row, headOri->col, bVal + aVal);
     }
     else
     {
@@ -306,14 +306,14 @@ sp_tuples * mult_tuples(sp_tuples * matA, sp_tuples * matB){
 
 
 
-void destroy_tuples(sp_tuples * mat_t)
+void destroy_tuples(sp_tuples * mat_t)    //free all mem allocation
 {
   destroy_recurs(mat_t->tuples_head);
   free(mat_t);
   return;
 }
 
-void destroy_recurs(sp_tuples_node * headP)
+void destroy_recurs(sp_tuples_node * headP)   //recursively free mem allocation and destroy recursively
 {
   if(headP->next == NULL)
   {
