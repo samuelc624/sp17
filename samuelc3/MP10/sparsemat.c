@@ -214,18 +214,18 @@ sp_tuples * add_tuples(sp_tuples * matA, sp_tuples * matB)
   {
     return NULL;
   }
-  sp_tuples * matC = malloc(sizeof(sp_tuples));
+  sp_tuples * matC = malloc(sizeof(sp_tuples));   //malloc sp_tuples
   matC->m = matA->m;
   //int r = matA->m;
   matC->n = matA->n;
   int c = matA->n;
   //int headLoc = ()
   int bR, bC;
-  sp_tuples_node * headOri = matA->tuples_head;
+  sp_tuples_node * headOri = matA->tuples_head;   //set pointers
   sp_tuples_node * bOri = matB->tuples_head;
   while(headOri != NULL)
   {
-    set_tuples(matC, headOri->row, headOri->col, headOri->value);
+    set_tuples(matC, headOri->row, headOri->col, headOri->value);   //if headOri not NULL, call set_tuples
     headOri = headOri->next;
   }
   headOri = matA->tuples_head;
@@ -236,7 +236,7 @@ sp_tuples * add_tuples(sp_tuples * matA, sp_tuples * matB)
   //sp_tuples_node * headCop = matC->tuples_head;
   while(bOri != NULL)
   {
-    bR = bOri->row;
+    bR = bOri->row;   //while bOri is not Null, set new row & col values
     bC = bOri->col;
     bLoc = bR * c + bC;
     bVal = bOri->value;
@@ -248,18 +248,18 @@ sp_tuples * add_tuples(sp_tuples * matA, sp_tuples * matB)
       if(headOri != NULL)
       {
         aVal = headOri->value;
-        oriLoc = ((headOri->row)*(c))+(headOri->col);
+        oriLoc = ((headOri->row)*(c))+(headOri->col);   //increment oriLoc
       }
-            headOri = headOri->next;
+            headOri = headOri->next;    //next node in linked list
     }
     if(headOri != NULL && oriLoc == bLoc)
     {
       //aVal = headOri->value;
-      set_tuples(matC, headOri->row, headOri->col, bVal + aVal);
+      set_tuples(matC, headOri->row, headOri->col, bVal + aVal);    //set_tuples call function
     }
     else
     {
-      set_tuples(matC, bR, bC, bVal);
+      set_tuples(matC, bR, bC, bVal);   //call set_tuples function
     }
     bOri = bOri->next;
   }
