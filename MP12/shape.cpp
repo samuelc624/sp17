@@ -85,7 +85,9 @@ double Circle::getRadius(){return radius_;}
 //constructor, getArea(), getVolume(), operator+, operator-
 //@@Insert your code here
 
-
+Sphere::Sphere(double radius) : Shape("Sphere"){
+  int radius_ = radius;
+}
 
 double Sphere::getRadius(){return radius_;}
 
@@ -109,7 +111,8 @@ vector<Shape*> CreateShapes(char* file_name){
   string name;
   ifstream readfile ("test1.txt");
   while(getline(readfile, name)){
-
+    ifstream ifs("test1.txt", std::ifstream::in);
+    ifs >> 
   }
 	return vector<Shape*>(0, NULL);
 }
