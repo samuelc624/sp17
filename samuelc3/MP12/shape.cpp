@@ -8,14 +8,10 @@
 //
 //Base class' constructor should be called in derived classes'
 //constructor to initizlize Shape's private variable
-/*class Shape{
-  Rectangle operator+(const Rectangle& other);
-  Rectangle operator-(const Rectangle& other)
-  double getVolume();
-  double getArea();
+
+Shape::Shape(string name) {
+  name_ = name;
 }
-return name_;
-*/
 
 //Rectangle
 //Please implement the member functions of Rectangle:
