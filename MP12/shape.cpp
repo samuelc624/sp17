@@ -106,15 +106,35 @@ double RectPrism::getLength(){return length_;}
 // Read shapes from test.txt and initialize the objects
 // Return a vector of pointers that points to the objects
 vector<Shape*> CreateShapes(char* file_name){
-  int count, r, i;
-  double temp;
+  double temp1, temp2, temp3;
   string name;
-  ifstream readfile ("test1.txt");
-  while(getline(readfile, name)){
-    ifstream ifs("test1.txt", std::ifstream::in);
-    ifs >> 
+  ifstream readfile(file_name, std::ifstream::in);
+  in_file name;
+  vector<Shape*> shapes;
+  while(in_file >> name){
+    if(name == "Rectangle"){
+      in_file >> temp1 >> temp2;
+      Shape* shape_ptr = new Rectangle(temp1, temp2);
+      shapes.push_back(shape_ptr);
+    }
+    if(name == "Circle"){
+      in_file >> temp1;
+      Shape* shape_ptr = new Circle(temp1);
+      shapes.push_back(shape_ptr);
+    }
+    if(name == "RectPrism") {
+      in_file >> temp1 >> temp2 >> temp3;
+      Shape* shape_ptr = new RectPrism(temp1, temp2, temp3);
+      shapes.push_back(shape_ptr);
+    }
+    if(name == "Sphere"){
+      in_file >> temp1;
+      Shape* shape_ptr = new Sphere(temp1);
+      shapes.push_back(shape_ptr);
+    }
   }
-	return vector<Shape*>(0, NULL);
+  in_file.close();
+	return shapes;
 }
 
 // call getArea() of each object
