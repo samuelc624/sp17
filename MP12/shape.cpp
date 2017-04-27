@@ -12,6 +12,9 @@
 Shape::Shape(string name) {
   name_ = name;
 }
+string Shape::getName(){
+  return name_;
+}
 
 //Rectangle
 //Please implement the member functions of Rectangle:
