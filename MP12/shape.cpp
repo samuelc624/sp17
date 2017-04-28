@@ -1,4 +1,4 @@
-rec#include "shape.hpp"
+#include "shape.hpp"
 #define PI  3.14159265
 
 
@@ -37,24 +37,20 @@ double Rectangle::getVolume(){
 }
 
 Rectangle Rectangle::operator+(const Rectangle& rec){
-  int dest_length = rec.length_ + length_;
-  int dest_width = rec.width_ + width_;
+  double dest_length = rec.length_ + length_;
+  double dest_width = rec.width_ + width_;
   return Rectangle(dest_length, dest_width);
 }
 
 Rectangle Rectangle::operator-(const Rectangle& rec){
-  int dest_length = max(0.0, rec.length_ - length_);
-  int dest_width = max(0.0, rec.width_ - width_);
-  return Rectangle(dest_length, dest_width);
+  double dest_length = max(0.0, length_ - rec.length_);
+  double dest_width = max(0.0, width_ - rec.width_);
+  return Rectangle(dest_width, dest_length);
 }
 
+double Rectangle::getWidth(){return width_;}
+double Rectangle::getLength(){return length_;}
 
-double Rectangle::getWidth(){
-  return width_;
-}
-double Rectangle::getLength(){
-  return length_;
-}
 
 //Circle
 //Please implement the member functions of Circle:
@@ -72,12 +68,12 @@ double Circle::getVolume(){
 }
 
 Circle Circle::operator+(const Circle& cir){
-  int dest_radius = cir.radius_ + radius_;
+  double dest_radius = cir.radius_ + radius_;
   return Circle(dest_radius);
 }
 
 Circle Circle::operator-(const Circle& cir){
-  int dest_radius = std::max( 0.0, cir.radius_ - radius_);
+  double dest_radius = max( 0.0, radius_ - cir.radius_);
   return Circle(dest_radius);
 }
 
@@ -90,8 +86,8 @@ double Circle::getRadius(){return radius_;}
 
 Sphere::Sphere(double radius) : Shape("Sphere"){
   radius_ = radius;
-
-double Sphere::getArea (){
+}
+double Sphere::getArea(){
   return (4 * PI * radius_ * radius_);
 }
 
@@ -100,12 +96,12 @@ double Sphere::getVolume(){
 }
 
 Sphere Sphere::operator+(const Sphere& sph){
-  int dest_radius = sph.radius_ + radius_;
+  double dest_radius = sph.radius_ + radius_;
   return Sphere(dest_radius);
 }
 
 Sphere Sphere::operator-(const Sphere& sph){
-  int dest_radius = std::max(0.0, sph.radius_ - radius_);
+  double dest_radius = max(0.0, radius_ - sph.radius_);
   return Sphere(dest_radius);
 }
 
@@ -131,17 +127,17 @@ double RectPrism::getVolume(){
 }
 
 RectPrism RectPrism::operator+(const RectPrism& rectp){
-  int dest_length = rectp.length_ + length_;
-  int dest_width = rectp.width_ + width_;
-  int dest_height = rectp.height_ + height_;
+  double dest_length = rectp.length_ + length_;
+  double dest_width = rectp.width_ + width_;
+  double dest_height = rectp.height_ + height_;
   return RectPrism(dest_length, dest_width, dest_height);
 }
 
 RectPrism RectPrism::operator-(const RectPrism& rectp){
-  int dest_length = max(0.0, rectp.length_ - length_);
-  int dest_width = max(0.0, rectp.width_ - width_);
-  int dest_height = max(0.0, rectp.height_ - height_);
-  return Rectangle(dest_length, dest_width, dest_height);
+  double dest_length = max(0.0, length_ - rectp.length_);
+  double dest_width = max(0.0, width_ - rectp.width_);
+  double dest_height = max(0.0, height_ - rectp.height_);
+  return RectPrism(dest_width, dest_length, dest_height);
 }
 
 double RectPrism::getWidth(){return width_;}
@@ -155,32 +151,32 @@ double RectPrism::getLength(){return length_;}
 vector<Shape*> CreateShapes(char* file_name){
   double temp1, temp2, temp3;
   string name;
-  ifstream readfile(file_name, std::ifstream::in);
-  in_file >> name;
+  ifstream poop(file_name, std::ifstream::in);
+  poop >> name;
   vector<Shape*> shapes;
-  while(in_file >> name){
+  while(poop >> name){
     if(name == "Rectangle"){
-      in_file >> temp1 >> temp2;
+      poop >> temp1 >> temp2;
       Shape* shape_ptr = new Rectangle(temp1, temp2);
       shapes.push_back(shape_ptr);
     }
     if(name == "Circle"){
-      in_file >> temp1;
+      poop >> temp1;
       Shape* shape_ptr = new Circle(temp1);
       shapes.push_back(shape_ptr);
     }
     if(name == "RectPrism") {
-      in_file >> temp1 >> temp2 >> temp3;
+      poop >> temp1 >> temp2 >> temp3;
       Shape* shape_ptr = new RectPrism(temp1, temp2, temp3);
       shapes.push_back(shape_ptr);
     }
     if(name == "Sphere"){
-      in_file >> temp1;
+      poop >> temp1;
       Shape* shape_ptr = new Sphere(temp1);
       shapes.push_back(shape_ptr);
     }
   }
-  in_file.close();
+  poop.close();
 	return shapes;
 }
 
@@ -188,16 +184,13 @@ vector<Shape*> CreateShapes(char* file_name){
 // return the max area
 double MaxArea(vector<Shape*> shapes){
 	double max_area = 0;
-  int count;
-  ifstream readfile(file_name, std::ifstream::in);
-  in_file >> count;
-for(int i = 0; i < count; i++){
-  vector<Shapes*> iterator::i = shapes.begin();
-    if(*i)->getArea() > max_area){
-      max_area = *i -> getArea();
+  double temp = 0;
+  for(vector<Shape*>::iterator shape_ptr = shapes.begin();shape_ptr != shapes.end(); shape_ptr++) {
+    temp = (*shape_ptr)->getArea();
+    if(temp > max_area){
+      max_area = temp;
     }
-  }
-  in_file.close;
+}
 	return max_area;
 }
 
@@ -206,15 +199,12 @@ for(int i = 0; i < count; i++){
 // return the max volume
 double MaxVolume(vector<Shape*> shapes){
 	double max_volume = 0;
-  int count;
-  ifstream readfile(file_name, std::ifstream::in);
-  in_file >> count;
-for(int i = 0; i < count; i++){
-  vector<Shapes*> iterator::i = shapes.begin();
-    if(*i)->getVolume() > max_volume){
-      max_volume = *i -> getVolume();
-    }
+  double temp = 0;
+    for(vector<Shape*>::iterator shape_ptr = shapes.begin();shape_ptr != shapes.end(); ++shape_ptr) {
+      temp = (*shape_ptr) -> getVolume();
+      if(temp > max_volume){
+        max_volume = temp;
+      }
   }
-  in_file.close;
-	return max_volume;
-}
+  	return max_volume;
+  }
