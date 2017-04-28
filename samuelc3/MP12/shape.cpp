@@ -43,9 +43,9 @@ Rectangle Rectangle::operator+(const Rectangle& other){
 }
 
 Rectangle Rectangle::operator-(const Rectangle& other){
-  int dest_length = other.length_ - length_;
-  int dest_width = other.width_ - width_;
-  return Rectangle(max(0.0, dest_length, dest_width));
+  int dest_length = max(0.0, other.length_ - length_);
+  int dest_width = max(0.0, other.width_ - width_);
+  return Rectangle(dest_length, dest_width);
 }
 
 
@@ -77,8 +77,8 @@ Circle Circle::operator+(const Circle& other){
 }
 
 Circle Circle::operator-(const Circle& other){
-  int dest_radius = other.radius_ - radius_;
-  return Circle(max(0.0, dest_radius));
+  int dest_radius = std::max( 0.0, other.radius_ - radius_);
+  return Circle(dest_radius);
 }
 
 double Circle::getRadius(){return radius_;}
@@ -105,8 +105,8 @@ Sphere Sphere::operator+(const Sphere& other){
 }
 
 Sphere Sphere::operator-(const Sphere& other){
-  int dest_radius = other.radius_ - radius_;
-  return Sphere(max(0.0, dest_radius));
+  int dest_radius = std::max(0.0, other.radius_ - radius_);
+  return Sphere(dest_radius);
 }
 
 double Sphere::getRadius(){return radius_;}
@@ -138,10 +138,10 @@ RectPrism RectPrism::operator+(const RectPrism& other){
 }
 
 RectPrism RectPrism::operator-(const RectPrism& other){
-  int dest_length = other.length_ - length_;
-  int dest_width = other.width_ - width_;
-  int dest_height = other.height_ - height_;
-  return Rectangle(max(0.0, dest_length, dest_width, dest_height));
+  int dest_length = max(0.0, other.length_ - length_);
+  int dest_width = max(0.0, other.width_ - width_);
+  int dest_height = max(0.0, other.height_ - height_);
+  return Rectangle(dest_length, dest_width, dest_height);
 }
 
 double RectPrism::getWidth(){return width_;}
