@@ -156,7 +156,7 @@ vector<Shape*> CreateShapes(char* file_name){
   double temp1, temp2, temp3;
   string name;
   ifstream readfile(file_name, std::ifstream::in);
-  in_file name;
+  in_file >> name;
   vector<Shape*> shapes;
   while(in_file >> name){
     if(name == "Rectangle"){
@@ -188,8 +188,16 @@ vector<Shape*> CreateShapes(char* file_name){
 // return the max area
 double MaxArea(vector<Shape*> shapes){
 	double max_area = 0;
-
-
+  int count;
+  ifstream readfile(file_name, std::ifstream::in);
+  in_file >> count;
+for(int i = 0; i < count; i++){
+  vector<Shapes*> iterator::i = shapes.begin();
+    if(*i)->getArea() > max_area){
+      max_area = *i -> getArea();
+    }
+  }
+  in_file.close;
 	return max_area;
 }
 
@@ -198,7 +206,16 @@ double MaxArea(vector<Shape*> shapes){
 // return the max volume
 double MaxVolume(vector<Shape*> shapes){
 	double max_volume = 0;
-	//@@Insert your code here
+  int count;
+  ifstream readfile(file_name, std::ifstream::in);
+  in_file >> count;
+for(int i = 0; i < count; i++){
+  vector<Shapes*> iterator::i = shapes.begin();
+    if(*i)->getVolume() > max_volume){
+      max_volume = *i -> getVolume();
+    }
+  }
+  in_file.close;
 
 
 	return max_volume;
