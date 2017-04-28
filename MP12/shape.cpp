@@ -1,4 +1,4 @@
-#include "shape.hpp"
+rec#include "shape.hpp"
 #define PI  3.14159265
 
 
@@ -36,15 +36,15 @@ double Rectangle::getVolume(){
   return 0;
 }
 
-Rectangle Rectangle::operator+(const Rectangle& other){
-  int dest_length = other.length_ + length_;
-  int dest_width = other.width_ + width_;
+Rectangle Rectangle::operator+(const Rectangle& rec){
+  int dest_length = rec.length_ + length_;
+  int dest_width = rec.width_ + width_;
   return Rectangle(dest_length, dest_width);
 }
 
-Rectangle Rectangle::operator-(const Rectangle& other){
-  int dest_length = max(0.0, other.length_ - length_);
-  int dest_width = max(0.0, other.width_ - width_);
+Rectangle Rectangle::operator-(const Rectangle& rec){
+  int dest_length = max(0.0, rec.length_ - length_);
+  int dest_width = max(0.0, rec.width_ - width_);
   return Rectangle(dest_length, dest_width);
 }
 
@@ -71,13 +71,13 @@ double Circle::getVolume(){
   return 0;
 }
 
-Circle Circle::operator+(const Circle& other){
-  int dest_radius = other.radius_ + radius_;
+Circle Circle::operator+(const Circle& cir){
+  int dest_radius = cir.radius_ + radius_;
   return Circle(dest_radius);
 }
 
-Circle Circle::operator-(const Circle& other){
-  int dest_radius = std::max( 0.0, other.radius_ - radius_);
+Circle Circle::operator-(const Circle& cir){
+  int dest_radius = std::max( 0.0, cir.radius_ - radius_);
   return Circle(dest_radius);
 }
 
@@ -92,20 +92,20 @@ Sphere::Sphere(double radius) : Shape("Sphere"){
   radius_ = radius;
 
 double Sphere::getArea (){
-  return (4 * PI * pow(radius_, 2));
+  return (4 * PI * radius_ * radius_);
 }
 
 double Sphere::getVolume(){
-  return((4.0 / 3.0) * pow(radius_,3) * PI);
+  return((4.0 / 3.0) * radius_ * radius_ * radius_ * PI);
 }
 
-Sphere Sphere::operator+(const Sphere& other){
-  int dest_radius = other.radius_ + radius_;
+Sphere Sphere::operator+(const Sphere& sph){
+  int dest_radius = sph.radius_ + radius_;
   return Sphere(dest_radius);
 }
 
-Sphere Sphere::operator-(const Sphere& other){
-  int dest_radius = std::max(0.0, other.radius_ - radius_);
+Sphere Sphere::operator-(const Sphere& sph){
+  int dest_radius = std::max(0.0, sph.radius_ - radius_);
   return Sphere(dest_radius);
 }
 
@@ -119,28 +119,28 @@ double Sphere::getRadius(){return radius_;}
 RectPrism::RectPrism(double length, double width, double height) : Shape("RectPrism"){
   length_ = length;
   width_ = width;
-  height_ = height:
+  height_ = height;
 }
 
 double RectPrism::getArea(){
-  return (2 * (length_ *  width_  + length_ * height_ + width_ * height_))
+  return (2 * (length_ *  width_  + length_ * height_ + width_ * height_));
 }
 
 double RectPrism::getVolume(){
   return (length_ * width_ * height_);
 }
 
-RectPrism RectPrism::operator+(const RectPrism& other){
-  int dest_length = other.length_ + length_;
-  int dest_width = other.width_ + width_;
-  int dest_height = other.height_ + height_;
+RectPrism RectPrism::operator+(const RectPrism& rectp){
+  int dest_length = rectp.length_ + length_;
+  int dest_width = rectp.width_ + width_;
+  int dest_height = rectp.height_ + height_;
   return RectPrism(dest_length, dest_width, dest_height);
 }
 
-RectPrism RectPrism::operator-(const RectPrism& other){
-  int dest_length = max(0.0, other.length_ - length_);
-  int dest_width = max(0.0, other.width_ - width_);
-  int dest_height = max(0.0, other.height_ - height_);
+RectPrism RectPrism::operator-(const RectPrism& rectp){
+  int dest_length = max(0.0, rectp.length_ - length_);
+  int dest_width = max(0.0, rectp.width_ - width_);
+  int dest_height = max(0.0, rectp.height_ - height_);
   return Rectangle(dest_length, dest_width, dest_height);
 }
 
@@ -216,7 +216,5 @@ for(int i = 0; i < count; i++){
     }
   }
   in_file.close;
-
-
 	return max_volume;
 }
