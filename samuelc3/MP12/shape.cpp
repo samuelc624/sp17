@@ -149,37 +149,47 @@ double RectPrism::getLength(){return length_;}
 // Read shapes from test.txt and initialize the objects
 // Return a vector of pointers that points to the objects
 vector<Shape*> CreateShapes(char* file_name){
-  double temp1, temp2, temp3;
-  string name;
-  ifstream poop(file_name, std::ifstream::in);
-  poop >> name;
-  vector<Shape*> shapes;
-  while(poop >> name){
-    if(name == "Rectangle"){
-      poop >> temp1 >> temp2;
-      Shape* shape_ptr = new Rectangle(temp1, temp2);
-      shapes.push_back(shape_ptr);
-    }
-    if(name == "Circle"){
-      poop >> temp1;
-      Shape* shape_ptr = new Circle(temp1);
-      shapes.push_back(shape_ptr);
-    }
-    if(name == "RectPrism") {
-      poop >> temp1 >> temp2 >> temp3;
-      Shape* shape_ptr = new RectPrism(temp1, temp2, temp3);
-      shapes.push_back(shape_ptr);
-    }
-    if(name == "Sphere"){
-      poop >> temp1;
-      Shape* shape_ptr = new Sphere(temp1);
-      shapes.push_back(shape_ptr);
-    }
-  }
-  poop.close();
-	return shapes;
-}
+	//@@Insert your code here
+	std::vector<Shape*> list;
 
+	string name;
+	double r, w, l, h;
+	ifstream ifs (file_name, std::ifstream::in);
+
+	Shape* shapePtr;
+
+	while(!ifs.eof()){
+		ifs >> name;
+		if(name == "Circle"){
+			ifs >> r;
+			shapePtr = new Circle(r);
+			//cout << name << endl;
+		}
+		else if(name == "Rectangle"){
+			ifs >> w >> l;
+			shapePtr = new Rectangle(w, l);
+			//cout << name << endl;
+		}
+		else if(name == "Sphere"){
+			ifs >> r;
+			shapePtr = new Sphere(r);
+			//cout << name << endl;
+		}
+		else if(name == "RectPrism"){
+			ifs >> w >> l >> h;
+			shapePtr = new RectPrism(w, l, h);
+			//cout << name << endl;
+		}
+		else{
+			continue;
+		}
+		list.push_back(shapePtr);
+	}
+
+	ifs.close();
+
+	return list; // please remeber to modify this line to return the correct value
+}
 // call getArea() of each object
 // return the max area
 double MaxArea(vector<Shape*> shapes){
